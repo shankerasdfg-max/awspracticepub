@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_USER = 'ravi420'
-        IMAGE_NAME = "${DOCKERHUB_USER}/devops-node-gke"
+        IMAGE_NAME = "${DOCKERHUB_USER}/ravidocker"
         GKE_CLUSTER = 'autopilot-cluster-1'
         GKE_ZONE = 'us-central1-a'
         PROJECT_ID = 'plexiform-being-467710-g0'

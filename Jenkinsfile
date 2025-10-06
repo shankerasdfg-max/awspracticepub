@@ -5,7 +5,7 @@ pipeline {
         DOCKERHUB_USER = 'ravi420'
         IMAGE_NAME = "${DOCKERHUB_USER}/ravidocker"
         GKE_CLUSTER = 'autopilot-cluster-1'
-        GKE_ZONE = 'us-central1-a'
+        GKE_ZONE = 'us-central1'
         PROJECT_ID = 'plexiform-being-467710-g0'
     }
 

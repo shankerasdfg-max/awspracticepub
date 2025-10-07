@@ -42,14 +42,22 @@ pipeline {
 
         stage('Deploy to GKE') {
             steps {
-                withCredentials([file(credentialsId: 'gcp-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
-                    sh '''
-                        gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
-                        gcloud config set project $PROJECT_ID
-                        gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $PROJECT_ID
+                sh '''
+            # Hardcoded credentials file path
+            export GOOGLE_APPLICATION_CREDENTIALS=/var/lib/jenkins/gcp-key.json
 
-                        kubectl set image deployment/node-app node-app=$IMAGE_NAME:$BUILD_NUMBER --record
-                    '''
+            # Authenticate with GCP
+            gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+            gcloud config set project my-gcp-project-id
+
+            # Connect to the GKE cluster
+            gcloud container clusters get-credentials my-gke-cluster \
+                --zone us-central1-a --project my-gcp-project-id
+
+            # Deploy the new image to Kubernetes
+            kubectl set image deployment/node-app node-app=ravi420/node-app:${BUILD_NUMBER} --record
+            kubectl rollout status deployment/node-app
+        '''
                 }
             }
         }
